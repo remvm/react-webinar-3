@@ -5,7 +5,8 @@ class Store {
   constructor(initState = {}) {
     this.state = initState;
     this.listeners = []; // Слушатели изменений состояния
-    this.state.index = initState.list.length + 1
+    this.state.index = 1
+    this.state.indexStore = initState.list.map(obj => obj.code)
   }
 
   /**
@@ -43,11 +44,17 @@ class Store {
    * Добавление новой записи
    */
   addItem() {
-    this.setState({
-      ...this.state,
-      list: [...this.state.list, {code: this.state.index, title: 'Новая запись'}],
-      index:  this.state.index + 1
-    })
+    if (this.state.indexStore.includes(this.state.index)) {
+      this.state.index ++
+      this.addItem()
+    } else {
+      this.setState({
+        ...this.state,
+        list: [...this.state.list, {code: this.state.index, title: 'Новая запись'}],
+        indexStore: [...this.state.indexStore, this.state.index],
+        index:  this.state.index + 1
+      })
+    }
   };
 
   /**
@@ -93,6 +100,10 @@ class Store {
       })
     })
   }
+
+  declOfNum = (number, titles) => {
+    return titles[number % 10 > 1 && number % 10 < 5 && (number % 100 < 12 || number % 100 > 14) ? 1 : 0]
+  };
 }
 
 export default Store;

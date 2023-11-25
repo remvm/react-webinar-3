@@ -1,5 +1,4 @@
 import React from 'react';
-import {createElement} from './utils.js';
 import './styles.css';
 
 /**
@@ -28,7 +27,7 @@ function App({store}) {
                 <div className='Item-code'>{item.code}</div>
                 <div className='Item-title'>{item.title}</div>
                 {item.count ? 
-                  <div className='Item-count'>| Выделяли {item.count} раз</div> :
+                  <div className='Item-count'>| Выделяли {item.count} {store.declOfNum(item.count, ['раз', 'раза'])}</div> :
                   <div className='Item-count'></div>
                 }
                 <div className='Item-actions'>
