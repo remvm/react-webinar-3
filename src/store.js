@@ -5,7 +5,7 @@ import {generateCode} from "./utils";
  */
 class Store {
   constructor(initState = {}) {
-    this.state = initState;
+    this.state = { ...initState, isModalOpen: false, cart: [] };
     this.listeners = []; // Слушатели изменений состояния
   }
 
@@ -40,15 +40,36 @@ class Store {
     for (const listener of this.listeners) listener();
   }
 
-  /**
-   * Добавление новой записи
-   */
-  addItem() {
-    this.setState({
-      ...this.state,
-      list: [...this.state.list, {code: generateCode(), title: 'Новая запись'}]
-    })
-  };
+  addItem(code) {
+    let inCart = this.state.cart.find(el => el.code == code)
+    let item = this.state.list.find(el => el.code == code)
+    if (inCart) {
+      const newCart = this.state.cart.map(item => {
+        if (code === item.code) {
+          return { ...item, quantity: item.quantity + 1 };
+        }
+        return item;
+      });
+  
+      this.setState({
+        ...this.state,
+        cart: newCart,
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        cart: [...this.state.cart, {...item, quantity: 1}]
+      })
+    }
+  }
+
+  showCart() {
+    this.setState({ ...this.state, isModalOpen: true });
+  }
+
+  hideCart() {
+    this.setState({ ...this.state, isModalOpen: false });
+  }
 
   /**
    * Удаление записи по коду
@@ -58,29 +79,7 @@ class Store {
     this.setState({
       ...this.state,
       // Новый список, в котором не будет удаляемой записи
-      list: this.state.list.filter(item => item.code !== code)
-    })
-  };
-
-  /**
-   * Выделение записи по коду
-   * @param code
-   */
-  selectItem(code) {
-    this.setState({
-      ...this.state,
-      list: this.state.list.map(item => {
-        if (item.code === code) {
-          // Смена выделения и подсчёт
-          return {
-            ...item,
-            selected: !item.selected,
-            count: item.selected ? item.count : item.count + 1 || 1,
-          };
-        }
-        // Сброс выделения если выделена
-        return item.selected ? {...item, selected: false} : item;
-      })
+      cart: this.state.cart.filter(item => item.code !== code)
     })
   }
 }
