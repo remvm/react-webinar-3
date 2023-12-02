@@ -25,6 +25,6 @@ export const generateCode = (function (start = 0) {
   return () => ++start;
 }());
 
-export function getSum(cartArr) {
-  return cartArr.map(el => el.price * el.quantity).reduce((acc, el) => acc + el, 0)
+export function formattedSum(sum) {
+  return sum.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB', minimumFractionDigits: 0 })
 }

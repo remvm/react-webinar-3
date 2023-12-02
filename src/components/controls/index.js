@@ -1,10 +1,13 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import {getSum, plural} from '../../utils.js';
+import {formattedSum, plural} from '../../utils.js';
 import Button from "../button/index.js";
 import './style.css';
 
-function Controls({cart, onShowCart}) {
+function Controls({cart, onShowCart, store}) {
+
+  const cartSum = store.getState().cartSum
+
   return (
     <div className='Controls'>
       <div className="Controls-title">В корзине:</div>
@@ -13,7 +16,7 @@ function Controls({cart, onShowCart}) {
           one: 'товар',
           few: 'товара',
           many: 'товаров'
-        })} / ${getSum(cart)} ₽` : `пусто`}
+        })} / ${formattedSum(cartSum)}` : `пусто`}
       </div>
       <Button action={onShowCart} text={'Перейти'} />
     </div>
@@ -21,7 +24,9 @@ function Controls({cart, onShowCart}) {
 }
 
 Controls.propTypes = {
-  onShowCart: PropTypes.func
+  onShowCart: PropTypes.func,
+  cart: PropTypes.array,
+  store: PropTypes.object
 };
 
 Controls.defaultProps = {

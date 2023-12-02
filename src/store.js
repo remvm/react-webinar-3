@@ -5,7 +5,10 @@ import {generateCode} from "./utils";
  */
 class Store {
   constructor(initState = {}) {
-    this.state = { ...initState, isModalOpen: false, cart: [] };
+    this.state = {...initState, 
+                  isModalOpen: false, 
+                  cart: [], 
+                  cartSum: 0 };
     this.listeners = []; // Слушатели изменений состояния
   }
 
@@ -43,24 +46,25 @@ class Store {
   addItem(code) {
     let inCart = this.state.cart.find(el => el.code == code)
     let item = this.state.list.find(el => el.code == code)
+    let newCart
+    let newSum = this.state.cartSum + item.price;
+
     if (inCart) {
-      const newCart = this.state.cart.map(item => {
-        if (code === item.code) {
-          return { ...item, quantity: item.quantity + 1 };
+      newCart = this.state.cart.map(cartItem => {
+        if (code === cartItem.code) {
+          return { ...cartItem, quantity: cartItem.quantity + 1 };
         }
-        return item;
-      });
-  
-      this.setState({
-        ...this.state,
-        cart: newCart,
+        return cartItem;
       });
     } else {
-      this.setState({
-        ...this.state,
-        cart: [...this.state.cart, {...item, quantity: 1}]
-      })
-    }
+      newCart = [...this.state.cart, { ...item, quantity: 1 }];
+      }
+    this.setState({
+      ...this.state,
+      cart: newCart,
+      cartSum: newSum
+    });
+    console.log(this.state.cart, this.state.cartSum)
   }
 
   showCart() {
@@ -76,10 +80,13 @@ class Store {
    * @param code
    */
   deleteItem(code) {
+    let item = this.state.cart.find(el => el.code == code)
+    let newSum = this.state.cartSum - item.price * item.quantity
     this.setState({
       ...this.state,
       // Новый список, в котором не будет удаляемой записи
-      cart: this.state.cart.filter(item => item.code !== code)
+      cart: this.state.cart.filter(item => item.code !== code),
+      cartSum: newSum
     })
   }
 }

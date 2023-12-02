@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 import Button from "../button";
 import './style.css';
+import { formattedSum } from "../../utils";
 
 function Item(props) {
 
@@ -18,7 +19,7 @@ function Item(props) {
       <div className='Item-title'>
         {props.item.title}
       </div>
-      <div className='Item-price'>{props.item.price} ₽</div>
+      <div className='Item-price'>{formattedSum(props.item.price)}</div>
       {props.item.quantity ? <div className="Item-quantity">{props.item.quantity} шт</div> : null}
       <div className='Item-actions'>
         <Button action={callbacks.onAdd} text={props.text} />
