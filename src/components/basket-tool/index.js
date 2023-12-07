@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import {cn as bem} from '@bem-react/classname';
 import {numberFormat, plural} from "../../utils";
 import './style.css';
+import MainPageLink from "../mainPageLink";
 
-function BasketTool({sum, amount, onOpen}) {
+function BasketTool({sum, amount, onOpen, onMainPage}) {
   const cn = bem('BasketTool');
   return (
     <div className={cn()}>
+      <MainPageLink onPageChange={onMainPage}/>
       <span className={cn('label')}>В корзине:</span>
       <span className={cn('total')}>
         {amount

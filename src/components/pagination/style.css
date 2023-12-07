@@ -1,0 +1,39 @@
+.Pagination {
+    display: flex;
+    justify-content: end;
+    padding: 20px;
+}
+
+.Pagination span {
+    display: flex;
+    flex-wrap: wrap;
+    background: none;
+    min-width: 20px;
+    height: 20px;
+    align-content:  center;
+    justify-content: center;
+    padding: 1px;
+}
+
+.active {
+    color: white;
+    background: #0087E9 !important;
+    cursor: default !important;
+}
+
+.nonactive {
+    cursor: pointer;
+}
+
+.nonactive a {
+    color: black;
+    text-decoration: none;
+}
+
+.nonactive:hover {
+    background: #E1E1E1;
+}
+
+.cover {
+    color: #CCCCCC;
+}

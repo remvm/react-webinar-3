@@ -1,0 +1,21 @@
+.Product {
+  margin-top: 20px;
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 20px;
+}
+
+.p {
+  margin: 0;
+}
+
+.span {
+  font-weight: bold;
+}
+
+.p:last-of-type {
+  font-size: 24px;
+  font-weight: bold;
+}
