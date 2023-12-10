@@ -5,7 +5,7 @@ import BasketTool from "../../components/basket-tool";
 import useStore from "../../store/use-store";
 import useSelector from "../../store/use-selector";
 import Product from '../../components/product';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Basket from '../basket';
 
 function ProductPage() {
@@ -14,22 +14,7 @@ function ProductPage() {
 
   useEffect(() => {
     store.actions.product.load(id);
-  }, []);
-  
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const handleLoad = () => {
-      navigate('/');
-    };
-
-    window.addEventListener('load', handleLoad);
-
-    return () => {
-      window.removeEventListener('load', handleLoad);
-    };
-  }, [navigate]);
-  
+  }, [id]); 
 
   const select = useSelector( state => ({
     title: state.product.title,
