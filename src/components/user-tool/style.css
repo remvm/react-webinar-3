@@ -1,0 +1,23 @@
+/* Контрол с общими действиями */
+.UserTool {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 20px;
+  padding: 10px 20px;
+  font-size: 18px;
+}
+
+.UserTool button {
+  height: 20px;
+  padding: 0 8px;
+  font-size: 13px;
+}
+
+.UserTool-linkIn {
+  text-decoration: none;
+}
+
+.UserTool-userLink {
+  font-size: 13px;
+}

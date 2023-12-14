@@ -19,6 +19,8 @@ function CatalogList() {
     limit: state.catalog.params.limit,
     count: state.catalog.count,
     waiting: state.catalog.waiting,
+    sort: state.catalog.sort,
+    category: state.catalog.category
   }));
 
   const callbacks = {
@@ -30,6 +32,7 @@ function CatalogList() {
     makePaginatorLink: useCallback((page) => {
       return `?${new URLSearchParams({
         page,
+        category: select.category,
         limit: select.limit,
         sort: select.sort,
         query: select.query

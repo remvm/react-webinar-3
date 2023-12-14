@@ -38,17 +38,20 @@ function Pagination(props) {
   return (
     <ul className={cn()}>
       {items.map((number, index) => (
-        <li key={index}
+        number
+          ? 
+          <li key={index}
             className={cn('item', {active: number === props.page, split: !number})}
             onClick={onClickHandler(number)}>
-          {number
-            ? (props.makeLink
-                ? <a href={props.makeLink(number)}>{number}</a>
-                : number
-            )
-            : '...'
-          }
-        </li>
+            {(props.makeLink
+              ? <a href={props.makeLink(number)}>{number}</a>
+              : number
+          )}</li>
+          :
+          <li key={index}
+            className={cn('item', {active: number === props.page, split: !number})}>
+            ...
+          </li>
       ))}
     </ul>
   )

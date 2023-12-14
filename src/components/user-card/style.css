@@ -1,0 +1,16 @@
+.UserCard {
+  padding: 20px;
+}
+
+.UserCard-label span {
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.UserCard h2 {
+  margin-bottom: 30px;
+}
+
+.UserCard-prop {
+  margin-bottom: 20px;
+}
