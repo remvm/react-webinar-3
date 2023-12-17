@@ -1,11 +1,12 @@
-/* Контрол с общими действиями */
 .UserTool {
   display: flex;
   justify-content: flex-end;
   align-items: baseline;
+  height: 21px;
   gap: 20px;
   padding: 10px 20px;
   font-size: 18px;
+  border-bottom: 1px solid #DCDCDC;
 }
 
 .UserTool button {

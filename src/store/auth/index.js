@@ -10,6 +10,13 @@ class AuthState extends StoreModule {
     };
   }
 
+  resetError() {
+    this.setState({
+      ...this.getState(),
+      error: null
+    });
+  }
+
   async login(login, password) {
     try {
       this.setState({
@@ -25,7 +32,6 @@ class AuthState extends StoreModule {
       });
       if (response.ok) {
         const result = await response.json();
-        console.log('Login success:', result.result.user);
         localStorage.setItem('authToken', result.result.token);
         this.setState({
           isAuthenticated: true,
@@ -52,15 +58,29 @@ class AuthState extends StoreModule {
     }
   }
 
-  logout() {
-    localStorage.removeItem('authToken');
-    this.setState({
-      isAuthenticated: false,
-      user: null,
-      error: null,
-      loading: false
-    }, 'Выход из системы');
+  async logout() {
+    try {
+      const authToken = localStorage.getItem('authToken');
+      await fetch('/api/v1/users/sign', {
+        method: 'DELETE',
+        headers: {
+          'X-Token': authToken,
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      localStorage.removeItem('authToken');
+      this.setState({
+        isAuthenticated: false,
+        user: null,
+        error: null,
+        loading: false
+      }, 'Выход из системы успешен');
+    } catch (error) {
+      console.error('Ошибка при выходе из системы:', error);
+    }
   }
+  
 
   async checkAuth() {
     const authToken = localStorage.getItem('authToken');
@@ -79,14 +99,23 @@ class AuthState extends StoreModule {
 
         if (response.ok) {
           const user = await response.json();
+          console.log(user)
           this.setState({
             isAuthenticated: true,
-            user,
+            user: user.result,
             error: null,
             loading: false
           }, 'Автоматическая авторизация');
         } else {
-          localStorage.removeItem('authToken'); // Удаляем токен при ошибке
+          await fetch('/api/v1/users/sign', {
+            method: 'DELETE',
+            headers: {
+              'X-Token': authToken,
+              'Content-Type': 'application/json'
+            }
+          });
+
+          localStorage.removeItem('authToken');
           this.setState({
             isAuthenticated: false,
             user: null,
@@ -95,7 +124,15 @@ class AuthState extends StoreModule {
           });
         }
       } catch (error) {
-        localStorage.removeItem('authToken'); // Удаляем токен при ошибке
+        await fetch('/api/v1/users/sign', {
+          method: 'DELETE',
+          headers: {
+            'X-Token': authToken,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        localStorage.removeItem('authToken');
         this.setState({
           isAuthenticated: false,
           user: null,

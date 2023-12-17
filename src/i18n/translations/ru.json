@@ -17,6 +17,7 @@
   "profile.phone": "Телефон",
   "user.enter": "Вход",
   "user.out": "Выход",
+  "user.loading": "Загрузка",
   "article.add": "Добавить",
   "filter.reset": "Сбросить",
   "basket.articles": {

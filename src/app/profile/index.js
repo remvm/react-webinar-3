@@ -10,22 +10,22 @@ import Spinner from "../../components/spinner";
 import LocaleSelect from "../../containers/locale-select";
 import UserTool from '../../components/user-tool';
 import UserCard from '../../components/user-card';
+import useInit from '../../hooks/use-init';
 
-function AuthPage() {
+function ProfilePage() {
   const store = useStore();
-  const navigate = useNavigate();
 
   const params = useParams();
+  useInit(() => {
+    store.actions.profile.load(params.id);
+  }, [params.id]);
+
 
   const select = useSelector(state => ({
     isAuthenticated: state.auth.isAuthenticated,
-    user: state.auth.user,
-    waiting: state.article.waiting,
+    user: state.profile.user,
+    loading: state.auth.loading || state.profile.loading
   }));
-
-  useEffect(() => {
-    !select.isAuthenticated && navigate("/login");
-  }, [select.isAuthenticated])
 
   const {t} = useTranslate();
 
@@ -36,11 +36,11 @@ function AuthPage() {
         <LocaleSelect/>
       </Head>
       <Navigation/>
-      <Spinner active={select.waiting}>
+      <Spinner active={select.loading}>
         <UserCard user={select.user} t={t}/>
       </Spinner>
     </PageLayout>
   );
 }
 
-export default memo(AuthPage);
+export default memo(ProfilePage);

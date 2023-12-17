@@ -9,10 +9,6 @@ function UserTool({t}) {
 
   const store = useStore()
 
-  useEffect(() => {
-    store.actions.auth.checkAuth();
-  }, [store]);
-
   const select = useSelector(state => ({
     user: state.auth.user,
     isAuthenticated: state.auth.isAuthenticated,
@@ -20,8 +16,12 @@ function UserTool({t}) {
   }));
 
   const callbacks = {
-    logOut: useCallback(() => {store.actions.auth.logout()}, [store]),
-  }
+    logOut: useCallback(() => {
+      store.actions.auth.logout();
+      store.actions.profile.resetState();
+    }, [store]),
+  };
+  
 
   const cn = bem('UserTool');
 
@@ -32,16 +32,17 @@ function UserTool({t}) {
   }
 
   if (select.loading) {
-    return <div className={cn()}>Loading...</div>;
+    return <div className={cn()}>{t('user.loading')}...</div>;
   } 
 
-  if (select.isAuthenticated && !select.loading && select.user && select.user.result && select.user.result.profile) {
-  return (
-    <div className={cn()}>
-        <Link className={cn('userLink')} to={'/profile'}>{select.user.result.profile.name}</Link>
-        <button onClick={callbacks.logOut}>{t('user.out')}</button>  
-    </div>
-  )}
+  if (select.isAuthenticated && !select.loading && select.user && select.user && select.user.profile) {
+    return (
+      <div className={cn()}>
+          <Link className={cn('userLink')} to={`/profile/${select.user._id}`}>{select.user.profile.name}</Link>
+          <button onClick={callbacks.logOut}>{t('user.out')}</button>  
+      </div>
+    )
+  }
 }
 
 export default memo(UserTool);

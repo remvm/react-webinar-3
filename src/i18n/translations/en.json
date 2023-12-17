@@ -17,6 +17,7 @@
   "profile.phone": "Phone",
   "user.enter": "Log in",
   "user.out": "Log out",
+  "user.loading": "Loading",
   "article.add": "Add",
   "filter.reset": "Reset",
   "basket.articles": {
