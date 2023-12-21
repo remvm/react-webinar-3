@@ -1,0 +1,19 @@
+.Form-controlBar {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.Form-button {
+  margin: 10px 10px 0 0;
+  padding: 1px 9px;
+}
+
+.Form-title {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.Form_firstLevel {
+  padding: 30px 40px 90px 40px;
+}

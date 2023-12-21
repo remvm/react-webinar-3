@@ -4,7 +4,7 @@ import './style.css';
 
 function Spinner({active, children}) {
   if (active) {
-    return <div className='Spinner'>{children}</div>
+    return <div className='Spinner'></div>
   } else {
     return children;
   }

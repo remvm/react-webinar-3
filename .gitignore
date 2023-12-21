@@ -2,3 +2,5 @@
 /.idea/
 /node_modules/
 /dist/
+/src/hooks/use-translate new.js
+/src/i18n/index.js

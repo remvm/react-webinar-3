@@ -1,0 +1,24 @@
+.CommentLogin-firstLevel {
+  padding: 30px 0 90px 40px;
+}
+
+.CommentLogin-notExists {
+  font-size: 16px;
+}
+
+.CommentLogin-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  outline: inherit;
+  color: #666666;
+  text-decoration: underline;
+  padding-left: 5px;
+}
+
+.loginButton {
+  color: #0087E9
+}
