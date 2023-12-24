@@ -12,10 +12,11 @@ function CommentLogin({exists, children, firstLevel = false, onClose, onSignIn, 
     return (
       <div className={cn('notExists')}>
         {firstLevel
-          ? <div className={cn('firstLevel')}><Link to={'/login'}>{t("commentForm.login")}</Link>
+          ? <div className={cn('firstLevel')}>
+              <button className={cn('button loginButton')} onClick={onSignIn}>{t("commentForm.login")}</button>
               {t("commentForm.toWriteComment")}
             </div>
-          : <div>
+          : <div className={'anotherLevel'}>
               <button className={cn('button loginButton')} onClick={onSignIn}>{t("commentForm.login")}</button>
               {t("commentForm.toWriteAnswer")} 
               <button className={cn('button cancelButton')} onClick={onClose}>{t("commentForm.cancel")}</button>
@@ -25,7 +26,10 @@ function CommentLogin({exists, children, firstLevel = false, onClose, onSignIn, 
     )
   } else {
     return (
-      children
+      <div className={cn('exists')}>
+        {children}
+      </div>
+      
     )
   }
 }

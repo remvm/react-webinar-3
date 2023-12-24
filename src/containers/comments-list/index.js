@@ -13,15 +13,19 @@ import commentFormActions from '../../store-redux/comment-form/actions'
 import useSelector from '../../hooks/use-selector';
 import shallowEqual from 'shallowequal';
 import { useLocation, useNavigate } from 'react-router-dom';
+import getLastChild from '../../utils/getLastChild';
 
 function CommentsList(params) {
 
   const store = useStore();
   const dispatch = useDispatch();
   const location = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const activeForm = useSelectorRedux(state => state.commentForm);
+  const selectRedux = useSelectorRedux(state => ({
+    activeForm: state.commentForm,
+    lastChild: state.commentForm.lastChild
+  }), shallowEqual);
 
   const select = useSelector(state => ({
     sessionExists: state.session.exists,
@@ -29,11 +33,11 @@ function CommentsList(params) {
   }), shallowEqual);
 
   const callbacks = {
-    openAnswerForm: useCallback(id => {dispatch(commentFormActions.open(id))
+    openAnswerForm: useCallback((id, lastChild, parentLevel) => {dispatch(commentFormActions.open(id, lastChild, parentLevel))
       }, [store]),
     closeForm: useCallback((e) => {e.preventDefault(), dispatch(commentFormActions.close())
       }, [store]),
-    onSubmit: useCallback((articleId, text, parent) => {dispatch(commentsActions.submit(articleId, text, parent))
+    onSubmit: useCallback((text, parent) => {dispatch(commentsActions.submit(text, parent))
       }, [store]),
     onSignIn: useCallback(() => {navigate('/login', {state: {back: location.pathname}});
       }, [location.pathname])
@@ -44,24 +48,24 @@ function CommentsList(params) {
       ...treeToList(listToTree(params.comments?.items ? params.comments.items : [], params.article._id), (item, level) => (
         {...item, level}
       ))
-    ]), [params.comments, select.sessionExists]),
+    ]), [params.comments, select.sessionExists, selectRedux.activeForm]),
   };
-
   
   const renders = {
     item: useCallback(item => (
       <CommentCard  item={item} 
-                    onAnswer={() => callbacks.openAnswerForm(item._id)} 
+                    onAnswer={() => {callbacks.openAnswerForm(item._id, getLastChild(item), item.level)}} 
                     t={params.t} 
-                    activeForm={activeForm}
+                    activeForm={selectRedux.activeForm}
                     onSubmit={callbacks.onSubmit} 
                     closeForm={callbacks.closeForm}
                     article={params.article}
                     sessionExists={select.sessionExists}
                     currentUser={select.currentUser}
                     onSignIn={callbacks.onSignIn}
+                    lastChild={selectRedux.lastChild}
       />
-    ), [callbacks.openAnswerForm, params.t, activeForm, select.sessionExists]),
+    ), [callbacks.openAnswerForm, params.t, selectRedux.activeForm, select.sessionExists, selectRedux.lastChild]),
   };
 
   return (
@@ -73,10 +77,11 @@ function CommentsList(params) {
                       item={params.article} 
                       t={params.t}
                       article={params.article}
-                      activeForm={activeForm}
+                      activeForm={selectRedux.activeForm}
                       sessionExists={select.sessionExists}
                       firstLevel={true}
                       onSignIn={callbacks.onSignIn}
+                      autoFocus={false}
         />
     </>
   )

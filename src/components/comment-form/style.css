@@ -17,3 +17,7 @@
 .Form_firstLevel {
   padding: 30px 40px 90px 40px;
 }
+
+.Form-error {
+  color: red;
+}

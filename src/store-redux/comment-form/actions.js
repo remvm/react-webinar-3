@@ -1,7 +1,7 @@
 export default {
 
-  open: (id) => {
-    return {type: 'commentForm/open', payload: {id}};
+  open: (id, lastChild, parentLevel) => {
+    return {type: 'commentForm/open', payload: {id, lastChild, parentLevel}};
   },
 
 

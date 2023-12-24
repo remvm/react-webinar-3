@@ -6,6 +6,7 @@
 .CommentCard-text {
   font-size: 14px;
   margin: 20px 0;
+  word-wrap: break-word;
 }
 
 .CommentCard-head {
