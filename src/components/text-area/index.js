@@ -20,7 +20,6 @@ function TextArea(params) {
   
   return (
     <textarea
-      autoFocus={params.autoFocus}
       className={'TextArea'}
       value={value}
       placeholder={params.placeholder}

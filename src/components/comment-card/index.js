@@ -9,6 +9,7 @@ import formatDateTime from '../../utils/date-format';
 function CommentCard(params) {
 
   const level = params.item.level > 4 ? 4 : params.item.level
+  const formLevel = params.activeForm.parentLevel + 1 > 4 ? 4 : params.activeForm.parentLevel + 1
 
   const cn = bem('CommentCard');
   return (
@@ -21,24 +22,20 @@ function CommentCard(params) {
           <div className={cn('date')}>{formatDateTime(params.item.dateCreate)}</div>
         </div>
         <div className={cn('text')}>{params.item.text}</div>
-          
-        {params.activeForm.id !== params.item._id &&
-          <button className={cn('button')} onClick={() => {params.onAnswer()}}>{params.t('comment.answer')}</button>
-        }
+        <button className={cn('button')} onClick={() => {params.onAnswer()}}>{params.t('comment.answer')}</button>
       </div>
-      <div style={{marginLeft: `${(params.activeForm.parentLevel + 1) * 30}px`}}>
+      <div style={{marginLeft: `${formLevel * 30}px`}}>
         {((params.lastChild && params.lastChild._id === params.item._id) || !params.lastChild) &&
-        <CommentForm  activeForm={params.activeForm} 
-                      item={params.item}
-                      onSubmit={params.onSubmit} 
-                      closeForm={params.closeForm}
-                      t={params.t}
-                      article={params.article}
-                      sessionExists={params.sessionExists}
-                      onSignIn={params.onSignIn}
-                      lastChild={params.lastChild}
-                      autoFocus={true}
-        />
+          <CommentForm  activeForm={params.activeForm} 
+                        item={params.item}
+                        onSubmit={params.onSubmit} 
+                        closeForm={params.closeForm}
+                        t={params.t}
+                        article={params.article}
+                        sessionExists={params.sessionExists}
+                        onSignIn={params.onSignIn}
+                        lastChild={params.lastChild}
+          />        
         }
       </div>
     </div>

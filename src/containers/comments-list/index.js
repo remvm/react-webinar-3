@@ -81,7 +81,6 @@ function CommentsList(params) {
                       sessionExists={select.sessionExists}
                       firstLevel={true}
                       onSignIn={callbacks.onSignIn}
-                      autoFocus={false}
         />
     </>
   )

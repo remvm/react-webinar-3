@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
 
-function CommentLogin({exists, children, firstLevel = false, onClose, onSignIn, t}) {
+function CommentLogin({exists, children, firstLevel = false, onClose, onSignIn, t, formRef}) {
 
   const cn = bem('CommentLogin')
 
@@ -16,7 +16,7 @@ function CommentLogin({exists, children, firstLevel = false, onClose, onSignIn, 
               <button className={cn('button loginButton')} onClick={onSignIn}>{t("commentForm.login")}</button>
               {t("commentForm.toWriteComment")}
             </div>
-          : <div className={'anotherLevel'}>
+          : <div ref={formRef} className={'anotherLevel'}>
               <button className={cn('button loginButton')} onClick={onSignIn}>{t("commentForm.login")}</button>
               {t("commentForm.toWriteAnswer")} 
               <button className={cn('button cancelButton')} onClick={onClose}>{t("commentForm.cancel")}</button>
@@ -26,10 +26,16 @@ function CommentLogin({exists, children, firstLevel = false, onClose, onSignIn, 
     )
   } else {
     return (
-      <div className={cn('exists')}>
-        {children}
+      <div>
+        {firstLevel ? 
+        <div className={cn('exists')}>
+          {children}
+        </div> :
+        <div ref={formRef} className={cn('exists')}>
+          {children}
+        </div>
+        }
       </div>
-      
     )
   }
 }

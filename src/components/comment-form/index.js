@@ -1,4 +1,4 @@
-import {memo, useCallback, useState} from 'react';
+import {memo, useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
@@ -11,6 +11,16 @@ function CommentForm(params) {
     text: '',
   });
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
+  const formRef = useRef();
+
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  }, [params.activeForm]);
 
   const callbacks = {
     onChange: useCallback((value, name) => {
@@ -32,13 +42,17 @@ function CommentForm(params) {
 
   const cn = bem('Form');
 
-  if (params.lastChild?._id === params.item._id || params.activeForm?.id === params.item._id || (params.article._id === params.item._id && params.activeForm.id ===  '')) {
+  if (params.lastChild?._id === params.item._id || 
+      params.activeForm?.id === params.item._id || 
+      (params.article._id === params.item._id && params.activeForm.id ===  '')
+      ) {
     return (
       <CommentLogin exists={params.sessionExists} 
                     firstLevel={params.firstLevel} 
                     onClose={params.closeForm}
                     onSignIn={params.onSignIn}
                     t={params.t}
+                    formRef={formRef}
       >
         <form className={cn({'firstLevel': params.firstLevel})} 
               onSubmit={(e) => {e.preventDefault(), setAttemptedSubmit(true), validText && params.onSubmit(submitData)}}
